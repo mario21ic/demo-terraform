@@ -1,21 +1,30 @@
 provider "aws" {
-  #region = "us-west-2"
-  region = "us-east-1"
+  region = "${var.region}"
 }
 
-resource "aws_instance" "web" {
-  #ami           = "ami-005bdb005fb00e791"
-  ami           = "ami-0a313d6098716f372"
+resource "aws_instance" "demo" {
+  ami           = "${var.ami_id}"
 
   instance_type = "t2.micro"
-  #key_name = "demokp"
-  key_name = "demovir"
+  key_name = "${var.key_name}"
 
-  #vpc_security_group_ids = ["sg-0b57c61023d544d66"]
   vpc_security_group_ids = ["${aws_security_group.demo.id}"]
 
   tags = {
-    Name = "HelloWorld"
+    Name = "demo"
+  }
+}
+
+resource "aws_instance" "web" {
+  ami           = "${var.ami_id}"
+
+  instance_type = "t2.micro"
+  key_name = "${var.key_name}"
+
+  vpc_security_group_ids = ["${aws_security_group.demo.id}"]
+
+  tags = {
+    Name = "web"
   }
 }
 
@@ -44,3 +53,15 @@ resource "aws_security_group" "demo" {
   }
 }
 
+variable "region" {
+  description = "Region de aws"
+  default = "us-west-2"
+}
+
+variable "ami_id" {
+  default = "ami-005bdb005fb00e791"
+}
+
+variable "key_name" {
+  default = "demokp"
+}
