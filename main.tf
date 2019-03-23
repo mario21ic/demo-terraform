@@ -9,6 +9,17 @@ module "ec2" {
   type       = "t2.micro"
 }
 
+module "ec2" {
+  source     = "./modules/ec2/"
+  #instancias = 2
+  region     = "${var.region}"
+  name       = "web"
+  env        = "${terraform.workspace}"
+  ami_name   = "mynginx"
+  key_name   = "demokp"
+  type       = "t2.micro"
+}
+
 resource "aws_elb" "demo" {
   name               = "demo"
   availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c", "us-west-2d"]
