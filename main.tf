@@ -2,8 +2,22 @@ provider "aws" {
   region = "${var.region}"
 }
 
+data "aws_ami" "myami" {
+  most_recent = true
+  owners = ["amazon"]
+  filter {
+    name = "name"
+    values = ["amzn-ami-hvm-2018.03.0.20181129-x86_64-gp2"]
+  }
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 resource "aws_instance" "demo" {
-  ami           = "${var.ami_id}"
+  #ami           = "${var.ami_id}"
+  ami           = "${data.aws_ami.myami.id}"
 
   instance_type = "t2.micro"
   key_name = "${var.key_name}"
