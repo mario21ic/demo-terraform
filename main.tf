@@ -1,22 +1,4 @@
-provider "aws" {
-  region = "${var.region}"
-}
-
-data "aws_ami" "myami" {
-  most_recent = true
-  owners = ["amazon"]
-  filter {
-    name = "name"
-    values = ["amzn-ami-hvm-2018.03.0.20181129-x86_64-gp2"]
-  }
-  filter {
-    name = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
 resource "aws_instance" "demo" {
-  #ami           = "${var.ami_id}"
   ami           = "${data.aws_ami.myami.id}"
 
   instance_type = "t2.micro"
@@ -27,10 +9,6 @@ resource "aws_instance" "demo" {
   tags = {
     Name = "demo"
   }
-}
-
-output "demo_ip" {
-  value = "${aws_instance.demo.public_ip}"
 }
 
 resource "aws_instance" "web" {
@@ -76,14 +54,6 @@ resource "aws_security_group" "demo" {
 variable "region" {
   description = "Region de aws"
   default = "us-west-2"
-}
-
-variable "ami_id" {
-  default = "ami-005bdb005fb00e791"
-}
-
-variable "key_name" {
-  default = "demokp"
 }
 
 resource "aws_elb" "demo" {
