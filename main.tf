@@ -9,7 +9,7 @@ module "ec2" {
   type       = "t2.micro"
 }
 
-module "ec2" {
+module "web" {
   source     = "./modules/ec2/"
   #instancias = 2
   region     = "${var.region}"
