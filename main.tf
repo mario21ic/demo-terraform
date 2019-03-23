@@ -41,6 +41,7 @@ resource "aws_elb" "demo" {
   }
 
   #instances                   = ["${aws_instance.demo.id}", "${aws_instance.web.id}"]
+  instances                   = ["${module.ec2.ids}"]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
