@@ -29,6 +29,10 @@ resource "aws_instance" "demo" {
   }
 }
 
+output "demo_ip" {
+  value = "${aws_instance.demo.public_ip}"
+}
+
 resource "aws_instance" "web" {
   ami           = "${var.ami_id}"
 
