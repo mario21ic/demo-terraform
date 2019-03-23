@@ -1,6 +1,6 @@
 module "ec2" {
   source     = "./modules/ec2/"
-  #instancias = 2
+  instancias = 2
   region     = "${var.region}"
   name       = "demo"
   env        = "${terraform.workspace}"
@@ -11,7 +11,7 @@ module "ec2" {
 
 module "web" {
   source     = "./modules/ec2/"
-  #instancias = 2
+  instancias = 1
   region     = "${var.region}"
   name       = "web"
   env        = "${terraform.workspace}"

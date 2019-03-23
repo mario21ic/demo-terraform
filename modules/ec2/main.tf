@@ -1,5 +1,6 @@
 resource "aws_instance" "demo" {
   ami           = "${data.aws_ami.myami.id}"
+  count         = "${var.instancias}"
 
   instance_type = "${var.type}"
   key_name = "${var.key_name}"
@@ -7,7 +8,7 @@ resource "aws_instance" "demo" {
   vpc_security_group_ids = ["${aws_security_group.demo.id}"]
 
   tags = {
-    Name = "${var.env}_${var.name}"
+    Name = "${var.env}_${var.name}_${count.index}"
   }
 }
 

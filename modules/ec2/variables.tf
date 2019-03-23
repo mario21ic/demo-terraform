@@ -4,4 +4,5 @@ variable "name" {}
 variable "ami_name" {}
 variable "key_name" {}
 variable "type" {}
+variable "instancias" {}
 
