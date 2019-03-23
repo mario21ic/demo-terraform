@@ -1,59 +1,12 @@
-resource "aws_instance" "demo" {
-  ami           = "${data.aws_ami.myami.id}"
-
-  instance_type = "t2.micro"
-  key_name = "${var.key_name}"
-
-  vpc_security_group_ids = ["${aws_security_group.demo.id}"]
-
-  tags = {
-    Name = "${terraform.workspace}_demo"
-  }
-}
-
-resource "aws_instance" "web" {
-  ami           = "${var.ami_id}"
-
-  instance_type = "t2.micro"
-  key_name = "${var.key_name}"
-
-  vpc_security_group_ids = ["${aws_security_group.demo.id}"]
-
-  tags = {
-    Name = "web"
-  }
-}
-
-resource "aws_security_group" "demo" {
-  name        = "${terraform.workspace}_sg_hello"
-  description = "Allow http inbound traffic"
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    #cidr_blocks     = ["0.0.0.0/0"]
-    security_groups = ["${aws_security_group.myelb.id}"]
-  }
-
-  egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
-  }
-}
-
-
-variable "region" {
-  description = "Region de aws"
-  default = "us-west-2"
+module "ec2" {
+  source     = "./modules/ec2/"
+  #instancias = 2
+  region     = "${var.region}"
+  name       = "demo"
+  env        = "${terraform.workspace}"
+  ami_name   = "mynginx"
+  key_name   = "demokp"
+  type       = "t2.micro"
 }
 
 resource "aws_elb" "demo" {
