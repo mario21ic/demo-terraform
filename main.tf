@@ -7,7 +7,7 @@ resource "aws_instance" "demo" {
   vpc_security_group_ids = ["${aws_security_group.demo.id}"]
 
   tags = {
-    Name = "demo"
+    Name = "${terraform.workspace}_demo"
   }
 }
 
@@ -25,7 +25,7 @@ resource "aws_instance" "web" {
 }
 
 resource "aws_security_group" "demo" {
-  name        = "sg_hello"
+  name        = "${terraform.workspace}_sg_hello"
   description = "Allow http inbound traffic"
 
   ingress {
@@ -84,7 +84,7 @@ resource "aws_elb" "demo" {
 }
 
 resource "aws_security_group" "myelb" {
-  name        = "sg_myelb"
+  name        = "${terraform.workspace}_sg_myelb"
   description = "Allow http inbound traffic"
 
   ingress {
